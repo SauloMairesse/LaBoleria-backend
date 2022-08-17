@@ -4,7 +4,6 @@ import orderSchema from "../schemas/orderSchema.js";
 function orderValidation(req, res, next) {
     const order = req.body
     console.log(chalk.yellow('orderValidation... \n'))
-    // console.log(chalk.blue('cake :'), cake)
 
     const {error} = orderSchema.validate(order, { abortEarly: false })
 
