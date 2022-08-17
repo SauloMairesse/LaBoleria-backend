@@ -10,7 +10,7 @@ function orderValidation(req, res, next) {
     if (error) {
         
         const errorMessages = error.details.map(item => item.message);
-        console.log(chalk.red(errorMessages[0]))
+        console.log(chalk.red(errorMessages))
         
         return res.status(400).send(errorMessages);
     }
