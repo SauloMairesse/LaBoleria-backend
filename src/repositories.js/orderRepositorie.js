@@ -27,3 +27,15 @@ export async function cakeExist(cakeId){
 
     return true;
 }
+
+export async function insertOrder(order){
+
+    const {clientId, cakeId, quantity, totalPrice} = order
+
+    await db.query(`
+        INSERT INTO orders("clientId", "cakeId", quantity, "totalPrice")
+        VALUES ($1,$2,$3,$4)
+    `, [clientId, cakeId, quantity, totalPrice])
+
+    return
+}

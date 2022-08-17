@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { cakeExist, clientExist } from "../repositories.js/orderRepositorie.js";
+import { cakeExist, clientExist, insertOrder } from "../repositories.js/orderRepositorie.js";
 
 export async function orderController(req, res) {
     const order = req.body
@@ -13,8 +13,10 @@ export async function orderController(req, res) {
         console.log('cakeExist, clientExist : \n', cake, client)
 
         if(!client || !cake){
-            return res.status(404).send('Client or Cake doesnt exist')
+            return res.status(404).send('Client or Cake doesnt exist in dataBase')
         }
+
+        await insertOrder(order)
 
         return res.sendStatus(201)
         
