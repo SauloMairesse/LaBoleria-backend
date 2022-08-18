@@ -1,10 +1,9 @@
 import chalk from "chalk";
-import { cakeExist, clientExist, insertOrder } from "../repositories.js/orderRepositorie.js";
+import { cakeExist, clientExist, getOrdersList, insertOrder } from "../repositories.js/orderRepositorie.js";
 
-export async function orderController(req, res) {
+export async function insertOrderController(req, res) {
     const order = req.body
     console.log(chalk.yellow('order from body :\n'), order)
-
     
     try {
         const client = await clientExist(order.clientId)
@@ -25,4 +24,18 @@ export async function orderController(req, res) {
         return res.sendStatus(500);
     }
 
+}
+
+export async function ordersListController(req, res){
+    console.log('testando ordersListController, pre try {}')
+    try {
+        console.log('tentando chamar get Orders List')
+        const ordersList = await getOrdersList()
+        // console.log(chalk.yellow('ordersList :  \n', ordersList))
+
+        return res.status(200).send(ordersList)
+    } catch (err) {
+        console.log(chalk.red('Catch ordersList: \n'), err);
+        return res.sendStatus(500);
+    }
 }
