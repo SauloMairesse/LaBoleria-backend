@@ -27,10 +27,16 @@ export async function insertOrderController(req, res) {
 }
 
 export async function ordersListController(req, res){
-    
+
+    const {date} = req.query
+    console.log(chalk.bold.yellow('(query string) date : \n'), date)
+
     try {
         const ordersList = await getOrdersList()
-
+        if(date){
+           const ordersOnDate = ordersList.filter( order => order.createdAt.includes(date))
+           console.log(chalk.bold.yellow('ordersOnDate : \n', ordersOnDate))
+        }
         return res.status(200).send(ordersList)
     } catch (err) {
         console.log(chalk.red('Catch ordersList: \n'), err);
