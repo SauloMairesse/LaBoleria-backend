@@ -27,11 +27,9 @@ export async function insertOrderController(req, res) {
 }
 
 export async function ordersListController(req, res){
-    console.log('testando ordersListController, pre try {}')
+    
     try {
-        console.log('tentando chamar get Orders List')
         const ordersList = await getOrdersList()
-        // console.log(chalk.yellow('ordersList :  \n', ordersList))
 
         return res.status(200).send(ordersList)
     } catch (err) {

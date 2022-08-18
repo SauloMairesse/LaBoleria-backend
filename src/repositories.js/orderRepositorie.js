@@ -47,7 +47,6 @@ export async function insertOrder(order){
 }
 
 export async function getOrdersList(){
-
     const ordersList = []
 
     async function buildObj(clientId, cakeId){
@@ -61,7 +60,7 @@ export async function getOrdersList(){
             FROM cakes
             WHERE id = $1
         `, [cakeId])
-
+ 
         return ( { client: clientInfo[0], cake: cakeInfo[0]} )
     }
 
@@ -70,11 +69,10 @@ export async function getOrdersList(){
         FROM orders
     `, [])
     
-    orders.map(async (order) => {
-        console.log('eu to dentro daqui ? ')
+    for(let i = 0; i < orders.length; i++){
+        const order = orders[i]
         const clientAndCakeINFO = await buildObj(order.clientId, order.cakeId)
-
-        const object  = {
+        const orderObject  = {
             client: clientAndCakeINFO.client,
             cake: clientAndCakeINFO.cake,
             orderId: order.orderId,
@@ -82,10 +80,8 @@ export async function getOrdersList(){
             quantity: order.quantity,
             totalPrice: order.totalPrice
         }
-        ordersList.push(object)
-    })
-    console.log('building ordersList... \n')
+        ordersList.push(orderObject)
+    }
 
-    console.log(ordersList)
     return ordersList
 }
