@@ -1,11 +1,12 @@
 import chalk from "chalk";
-import orderSchema from "../schemas/orderSchema.js";
+import dateSchema from "../schemas/dateSchema.js";
 
 function dateValidation(req, res, next) {
     const {date} = req.query
+    console.log('dateValidation : \n', date)
 
     if(date){
-        const {error} = dateSchema.validate(date, { abortEarly: false })
+        const {error} = dateSchema.validate({date:date}, { abortEarly: false })
     
         if (error) {
             const errorMessages = error.details.map(item => item.message);
@@ -16,6 +17,8 @@ function dateValidation(req, res, next) {
     
         return next()
     }
+
+    return next()
 }
 
-export default orderValidation;
+export default dateValidation;

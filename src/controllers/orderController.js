@@ -33,13 +33,23 @@ export async function ordersListController(req, res){
 
     try {
         const ordersList = await getOrdersList()
+        
+        if(ordersList.length == 0){
+            return res.status(404).send(ordersList)
+        }
+        
         if(date){
            const ordersOnDate = ordersList.filter( order => order.createdAt.includes(date))
-           console.log(chalk.bold.yellow('ordersOnDate : \n', ordersOnDate))
+           if(ordersOnDate.length == 0){
+             return res.status(404).send(ordersOnDate)
+           }
+           return res.status(200).send(ordersOnDate)
         }
+
         return res.status(200).send(ordersList)
+
     } catch (err) {
-        console.log(chalk.red('Catch ordersList: \n'), err);
+        console.log(chalk.red('Catch ordersListConstroller: \n'), err);
         return res.sendStatus(500);
     }
 }
