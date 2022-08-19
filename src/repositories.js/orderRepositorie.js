@@ -115,6 +115,7 @@ export async function orderById(id){
     }
 
     const clientAndCakeINFO = await buildObj(order[0].clientId, order[0].cakeId)
+    
     const orderObject  = {
         client: clientAndCakeINFO.client,
         cake: clientAndCakeINFO.cake,
