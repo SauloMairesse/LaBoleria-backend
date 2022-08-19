@@ -3,7 +3,6 @@ import { checkClientExist, clientOrders, insertClientRepository  } from "../repo
 
 export async function insertClientController(req, res) {
     const client = req.body
-    console.log(chalk.yellow('client from body : \n '), client)
 
     try {
         
@@ -19,7 +18,6 @@ export async function insertClientController(req, res) {
 
 export async function getClientOrdersController(req, res){
     const {id} = req.params
-    console.log('id of client :', id)
     try {
 
         const client = await checkClientExist(id)
@@ -29,9 +27,7 @@ export async function getClientOrdersController(req, res){
 
         const listOrders = await clientOrders(id)
 
-        console.log('listOders :', listOrders)
-
-        return res.sendStatus(200)
+        return res.status(200).send(listOrders)
 
     } catch (err) {
         console.log(chalk.bold.red('Catch getClientOrdersController: '), err);

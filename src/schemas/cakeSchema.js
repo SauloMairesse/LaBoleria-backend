@@ -9,13 +9,14 @@ const cakeSchema = Joi.object({
             .positive()
             .greater(0)
             .precision(2)
+            .options({ convert: false })
             .required(),
     image: Joi.string()
             .uri()
             .required(),
     description : Joi.string()
-            .allow('')
-            .required()
+            .allow('') //a descrição aceita vazio como string.
+            .required() 
 })
 
 export default cakeSchema

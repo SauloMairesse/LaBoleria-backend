@@ -3,13 +3,10 @@ import { cakeExist, clientExist, getOrdersList, insertOrder, orderById } from ".
 
 export async function insertOrderController(req, res) {
     const order = req.body
-    console.log(chalk.yellow('order from body :\n'), order)
     
     try {
         const client = await clientExist(order.clientId)
         const cake = await cakeExist(order.cakeId)
-
-        console.log('cakeExist, clientExist : \n', cake, client)
 
         if(!client || !cake){
             return res.status(404).send('Client or Cake doesnt exist in dataBase')
@@ -29,7 +26,6 @@ export async function insertOrderController(req, res) {
 export async function ordersListController(req, res){
 
     const {date} = req.query
-    console.log(chalk.bold.yellow('(query string) date : \n'), date)
 
     try {
         const ordersList = await getOrdersList()
@@ -57,7 +53,6 @@ export async function ordersListController(req, res){
 export async function orderByIdController(req, res){
 
     const {id} = req.params
-    console.log(chalk.bold.yellow('(params) id :'), id)
 
     try {
 

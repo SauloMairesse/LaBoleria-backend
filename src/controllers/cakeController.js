@@ -3,11 +3,9 @@ import { getCake, insertCake } from "../repositories.js/cakesRepositories.js";
 
 export async function insertCakeController(req, res) {
     const cake = req.body
-    // console.log('cake : ', cake)
 
     try {
         const alreadyExist = await getCake(cake.name);
-        // console.log('cake :', alreadyExist)
         
         if(alreadyExist.length == 0){
             await insertCake(cake)

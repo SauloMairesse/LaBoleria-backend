@@ -3,7 +3,6 @@ import cakeSchema from "../schemas/cakeSchema.js";
 
 function cakeValidation(req, res, next) {
     const cake = req.body
-    // console.log(chalk.blue('cake :'), cake)
 
     const {error} = cakeSchema.validate(cake, { abortEarly: false })
 

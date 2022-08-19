@@ -1,4 +1,5 @@
 import db from '../../config/db.js'
+import moment from 'moment';
 
 export async function insertClientRepository(client){
 const {name, address, phone } = client
@@ -12,24 +13,17 @@ return
 }
 
 export async function clientOrders(clientId){
-
-    console.log('repository clientsOrders :', clientId)
-
-    const { rows: client} = await db.query(`
-        SELECT * FROM clients
-        WHERE clients.id = $1
-    `, [clientId]);
-    
-    if(client.length == 0){
-        return '404'
-    }
     
     const { rows: listOrders } = await db.query(`
-        SELECT * FROM orders
-        WHERE orders."clientId" = $1
+        SELECT o.id AS "orderId", o.quantity, o."createdAt", o."totalPrice", c.name AS "cakeName" 
+        FROM orders o
+        JOIN cakes c ON o."cakeId" = c.id
+        WHERE o."clientId" = $1
     `, [clientId])
 
-    // console.log(listOrders)
+    listOrders.map( (order) => {
+        order.createdAt = moment(order.createdAt).format('YYYY-MM-DD HH:MM')
+    })
 
     return listOrders
     }
