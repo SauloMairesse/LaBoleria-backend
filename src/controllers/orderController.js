@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { cakeExist, clientExist, getOrderById, getOrdersList, insertOrder } from "../repositories.js/orderRepositorie.js";
+import { cakeExist, clientExist, getOrdersList, insertOrder, orderById } from "../repositories.js/orderRepositorie.js";
 
 export async function insertOrderController(req, res) {
     const order = req.body
@@ -57,33 +57,17 @@ export async function ordersListController(req, res){
 export async function orderByIdController(req, res){
 
     const {id} = req.params
-    console.log(chalk.bold.yellow('(params) id : \n'), id)
+    console.log(chalk.bold.yellow('(params) id :'), id)
 
     try {
-        if(id){
-            const orderById = await getOrderById(id)
-            if(orderById.length == 0){
-                return res.status(404)
-            }
-            
-            return res.status(200).send(orderById)
+
+        const orderList = await orderById(id)
+
+        if(orderList.length == 0){
+            return res.sendStatus(404)
         }
 
-        const ordersList = await getOrdersList()
-        
-        if(ordersList.length == 0){
-            return res.status(404).send(ordersList)
-        }
-        
-        if(date){
-           const ordersOnDate = ordersList.filter( order => order.createdAt.includes(date))
-           if(ordersOnDate.length == 0){
-             return res.status(404).send(ordersOnDate)
-           }
-           return res.status(200).send(ordersOnDate)
-        }
-
-        return res.status(200).send(ordersList)
+        return res.status(200).send(orderList)
 
     } catch (err) {
         console.log(chalk.red('Catch ordersListConstroller: \n'), err);

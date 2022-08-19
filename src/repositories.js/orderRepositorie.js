@@ -86,9 +86,7 @@ export async function getOrdersList(){
     return ordersList
 }
 
-export async function getOrderById(id){
-
-    const ordersList = []
+export async function orderById(id){
 
     async function buildObj(clientId, cakeId){
         const { rows: clientInfo } = await db.query(`
@@ -105,25 +103,27 @@ export async function getOrderById(id){
         return ( { client: clientInfo[0], cake: cakeInfo[0]} )
     }
 
-    const { rows: orders}  = await db.query(`
+    const { rows: order}  = await db.query(`
         SELECT "clientId", "cakeId", id AS "orderId", "createdAt", quantity, "totalPrice" 
         FROM orders
         WHERE orders.id = $1
     `, [id])
     
-    for(let i = 0; i < orders.length; i++){
-        const order = orders[i]
-        const clientAndCakeINFO = await buildObj(order.clientId, order.cakeId)
-        const orderObject  = {
-            client: clientAndCakeINFO.client,
-            cake: clientAndCakeINFO.cake,
-            orderId: order.orderId,
-            createdAt: moment(order.createdAt).format('YYYY-MM-DD HH:MM'),
-            quantity: order.quantity,
-            totalPrice: order.totalPrice
-        }
-        ordersList.push(orderObject)
+    //case id doesnt exist
+    if(order.length == 0){
+        return []
     }
 
-    return ordersList
+    const clientAndCakeINFO = await buildObj(order[0].clientId, order[0].cakeId)
+    const orderObject  = {
+        client: clientAndCakeINFO.client,
+        cake: clientAndCakeINFO.cake,
+        orderId: order[0].orderId,
+        createdAt: moment(order[0].createdAt).format('YYYY-MM-DD HH:MM'),
+        quantity: order[0].quantity,
+        totalPrice: order[0].totalPrice
+    }
+
+    return orderObject
+
 }
