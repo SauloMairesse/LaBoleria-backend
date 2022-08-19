@@ -85,3 +85,45 @@ export async function getOrdersList(){
 
     return ordersList
 }
+
+export async function getOrderById(id){
+
+    const ordersList = []
+
+    async function buildObj(clientId, cakeId){
+        const { rows: clientInfo } = await db.query(`
+            SELECT id, name, address, phone
+            FROM clients
+            WHERE id = $1
+            `, [clientId])
+        const { rows: cakeInfo } = await db.query(`
+            SELECT id, name, price, description, image
+            FROM cakes
+            WHERE id = $1
+        `, [cakeId])
+ 
+        return ( { client: clientInfo[0], cake: cakeInfo[0]} )
+    }
+
+    const { rows: orders}  = await db.query(`
+        SELECT "clientId", "cakeId", id AS "orderId", "createdAt", quantity, "totalPrice" 
+        FROM orders
+        WHERE orders.id = $1
+    `, [id])
+    
+    for(let i = 0; i < orders.length; i++){
+        const order = orders[i]
+        const clientAndCakeINFO = await buildObj(order.clientId, order.cakeId)
+        const orderObject  = {
+            client: clientAndCakeINFO.client,
+            cake: clientAndCakeINFO.cake,
+            orderId: order.orderId,
+            createdAt: moment(order.createdAt).format('YYYY-MM-DD HH:MM'),
+            quantity: order.quantity,
+            totalPrice: order.totalPrice
+        }
+        ordersList.push(orderObject)
+    }
+
+    return ordersList
+}

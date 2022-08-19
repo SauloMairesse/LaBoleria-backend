@@ -7,5 +7,6 @@ const ordersRouter = Router()
 
 ordersRouter.post('/order', orderValidation, insertOrderController)
 ordersRouter.get('/orders', dateValidation, ordersListController)
+ordersRouter.get('/orders/:id', )
 
 export default ordersRouter;
