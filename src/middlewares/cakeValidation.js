@@ -9,7 +9,6 @@ function cakeValidation(req, res, next) {
     if (error) {
         
         const errorMessages = error.details.map(item => item.message);
-        console.log(chalk.red(errorMessages[0]))
 
         const errorUrlEmpty = "\"image\" is not allowed to be empty"
         const erroUrlInvalid = "\"image\" must be a valid uri"
